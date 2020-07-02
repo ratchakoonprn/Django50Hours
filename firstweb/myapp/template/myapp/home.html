@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Python Libraries Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>Python Libraries for Data Science</h1>
+  <p>Python is one of the most popular languages used by data scientists and software developers alike for data science tasks. It can be used to predict outcomes, automate tasks, streamline processes, and offer business intelligence insights.</p> 
+  <p>
+    <a href="{% url 'home-page' %}">Home</a> | 
+    <a href="{% url 'about-page' %}">About</a> | 
+    <a href="{% url 'contact-page' %}">Contact Us</a>
+  </p>
+</div>
+  
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>{{product1}}</h3>
+      {% load static %}
+      <img src="{% static "images/scrapy.png" %}"alt="Scrapy" style="width:150px;height:150px;">
+      <h1><a href="{% url 'scrapy-page' %}">Scrapy</a></h1>
+      <p>One of the most popular Python data science libraries, Scrapy helps to build crawling programs (spider bots) that can retrieve structured data from the web – for example, URLs or contact info. It's a great tool for scraping data used in, for example, Python machine learning models. Developers use it for gathering data from APIs. This full-fledged framework follows the Don't Repeat Yourself principle in the design of its interface. As a result, the tool inspires users to write universal code that can be reused for building and scaling large crawlers.</p>
+    </div>
+    <div class="col-sm-4">
+      <h3>{{product2}}</h3>
+      <img src="{% static "images/scikit.png" %}" alt="SciKit-Lear" style="width:150px;height:150px;">
+      <h1>SciKit-Learn</h1>
+      <p>This is an industry-standard for data science projects based in Python. Scikits is a group of packages in the SciPy Stack that were created for specific functionalities – for example, image processing. Scikit-learn uses the math operations of SciPy to expose a concise interface to the most common machine learning algorithms. Data scientists use it for handling standard machine learning and data mining tasks such as clustering, regression, model selection, dimensionality reduction, and classification. Another advantage? It comes with quality documentation and offers high performance. </p>
+    </div>
+    <div class="col-sm-4">
+      <h3>{{product3}}</h3>
+      <img src="{% static "images/matplotlib.png" %}" alt="Matplotlib" style="width:150px;height:150px;">        
+      <h1>Matplotlib</h1>
+      <p>This is a standard data science library that helps to generate data visualizations such as two-dimensional diagrams and graphs (histograms, scatterplots, non-Cartesian coordinates graphs). Matplotlib is one of those plotting libraries that are really useful in data science projects — it  provides an object-oriented API for embedding plots into applications. It's thanks to this library that Python can compete with scientific tools like MatLab or Mathematica. However, developers need to write more code than usual while using this library for generating advanced visualizations. Note that popular plotting libraries work seamlessly with Matplotlib.</p>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+</html>
