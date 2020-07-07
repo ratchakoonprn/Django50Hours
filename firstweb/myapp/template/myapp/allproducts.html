@@ -1,22 +1,52 @@
 {% extends 'myapp/base.html' %}
 
 {% block content %}
-  <h3>Libraries Listing</h3>
-  <p>Popular Python Libraries for Data Science</p>
+	<h3>Libraries Listing</h3>
+	<p>Popular Python Libraries for Data Science</p>
 
-  {% for pd in product %}<!-- product ก็คือตัว key ใน dictionary ที่อยู่ในไฟล์ views.py => context = {'product':product} -->
-    <!--<h1>{{ pd.name }}</h1>
-    <img src="{{ pd.imageurl }}" style="width:100px;height:50px";/>
-    <p>{{ pd.price }}</p>
-    <p>{{ pd.detail }}</p>
-    <hr><br> -->
-    <div class="card" style="width:500px">
-    <img class="card-img-top" src="{{ pd.imageurl }}" alt="Card image" style="width:100px;height:50px";/>
-    <h1 class="card-title">{{ pd.name }}</h1>
-    <p class="card-text">{{ pd.price }}</p>
-    <p class="card-text">{{ pd.detail }}</p>
-  </div>
-  <br><br>
-  {% endfor %}
+	<div class="container-fluid">
+		<div class="row">
+			{% for pd in product %}<!-- product ก็คือตัว key ใน dictionary ที่อยู่ในไฟล์ views.py => context = {'product':product} -->
+				<!--<h1>{{ pd.name }}</h1>
+				<img src="{{ pd.imageurl }}" style="width:100px;height:50px";/>
+				<p>{{ pd.price }}</p>
+				<p>{{ pd.detail }}</p>
+				<hr><br> -->
+					<div class="col-sm-4">
+							<div class="card" style="width:300px; height: 550px;">
+									<!--<img class="card-img-top" src="{{ pd.imageurl }}" alt="Card image" style="width:100px;height:50px";/>-->
+									{% if pd.image %}
+										<img class="card-img-top" src="{{ pd.image.url }}" alt="Card image" style="width:100px;height:50px";/>
+									{% elif pd.imageurl != None %}
+										<img class="card-img-top" src="{{ pd.imageurl }}" alt="Card image" style="width:100px;height:50px";/>
+									{% else %}
+										<img class="card-img-top" src="/media/products/default.png" alt="Card image" style="width:100px;height:50px";/>
+									{% endif %}
+									<div class="card-body">
+										<h1 class="card-title">{{ pd.name }}</h1>
+
+										<p class="card-text">Course Price: {{ pd.price }} Baht</p>
+
+										{% if pd.quantity > 0 %}
+											<p class="card-text">Participants Avaliable: {{ pd.quantity }} {{ pd.unit }}</p>
+										{% else %}
+											<p class="card-text" style="color: red;font-weight: bold;">Course is Full</p>
+										{% endif %}
+
+
+										<p class="card-text">{{ pd.detail }}</p>	
+									</div>
+
+									{% if pd.instock == True %}
+										<a href="#" class="btn btn-info">Download Avaliable</a>
+									{% else %}
+										<a href="#" class="btn btn-danger">Unavaliable</a>
+									{% endif %}
+							</div>
+							<br><br>
+					</div>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock content %}
 

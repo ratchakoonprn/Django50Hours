@@ -15,6 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .import settings
+from django.contrib.staticfiles.urls import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+  
+#urlpatterns += staticfiles_urlpatterns()
+#urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 """
 คำสั่ง include คือ การ link program กับ app เข้ากัน
 path คือ การทำให้เว็บไซต์เรามี url ย่อย
@@ -25,3 +31,6 @@ urlpatterns = [
 	path('', include('myapp.urls')) #localhost:8000
 	# บรรทัดบนนี้เป็นการทำให้โปรเจค link กับ urls ของ app
 ]
+
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

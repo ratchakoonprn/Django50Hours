@@ -42,6 +42,9 @@ def AddProduct(request):
 	return render(request,'myapp/addproduct.html')
 
 def Product(request):
-	product = Allproduct.objects.all() #ดึงข้อมูลทั้งหมดมาจากฐานข้อมูลชื่อ AllProduct
+	#product = Allproduct.objects.all() #ดึงข้อมูลทั้งหมดมาจากฐานข้อมูลชื่อ AllProduct
+	#product = product.order_by('name')
+	#product = Allproduct.objects.all().order_by('id').reverse()
+	product = Allproduct.objects.all().order_by('name')
 	context = {'product':product} #โยนข้อมูลที่เราถึงมาจากบรรทัดข้างบนเพื่อแนบไปกับ context
 	return render(request,'myapp/allproducts.html',context)
