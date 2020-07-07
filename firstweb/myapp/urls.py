@@ -8,4 +8,5 @@ urlpatterns = [
 	path('contact/', Contact, name = 'contact-page'),
 	path('scrapy/', Scrapy, name = 'scrapy-page'),
 	path('addproduct/', AddProduct, name = 'addproduct-page'),
+	path('allproducts/', Product, name = 'allproducts-page'),
 ]

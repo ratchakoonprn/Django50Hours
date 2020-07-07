@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.staticfiles import storage
+from .models import Allproduct
 #HttpResponse คือ ฟังก์ชันสำหรับทำให้แสดงข้อความหน้าเว็บได้
 
 def Home(request):
@@ -23,7 +24,7 @@ def Contact(request):
 def Scrapy(request):
 	return render(request,'myapp/scrapy.html')
 
-from .models import Allproduct
+
 def AddProduct(request):
 	if request.method == 'POST':
 		data = request.POST.copy() #ดึงข้อมูลจากหน้า addproduct.html
@@ -40,4 +41,7 @@ def AddProduct(request):
 
 	return render(request,'myapp/addproduct.html')
 
-
+def Product(request):
+	product = Allproduct.objects.all() #ดึงข้อมูลทั้งหมดมาจากฐานข้อมูลชื่อ AllProduct
+	context = {'product':product} #โยนข้อมูลที่เราถึงมาจากบรรทัดข้างบนเพื่อแนบไปกับ context
+	return render(request,'myapp/allproducts.html',context)

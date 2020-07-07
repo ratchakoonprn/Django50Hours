@@ -1,0 +1,22 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+  <h3>Libraries Listing</h3>
+  <p>Popular Python Libraries for Data Science</p>
+
+  {% for pd in product %}<!-- product ก็คือตัว key ใน dictionary ที่อยู่ในไฟล์ views.py => context = {'product':product} -->
+    <!--<h1>{{ pd.name }}</h1>
+    <img src="{{ pd.imageurl }}" style="width:100px;height:50px";/>
+    <p>{{ pd.price }}</p>
+    <p>{{ pd.detail }}</p>
+    <hr><br> -->
+    <div class="card" style="width:500px">
+    <img class="card-img-top" src="{{ pd.imageurl }}" alt="Card image" style="width:100px;height:50px";/>
+    <h1 class="card-title">{{ pd.name }}</h1>
+    <p class="card-text">{{ pd.price }}</p>
+    <p class="card-text">{{ pd.detail }}</p>
+  </div>
+  <br><br>
+  {% endfor %}
+{% endblock content %}
+

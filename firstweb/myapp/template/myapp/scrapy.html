@@ -1,29 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Python Libraries Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-</head>
-<body>
+{% extends 'myapp/base.html' %}
 
-<div class="jumbotron text-center">
-  <h1>Python Libraries for Data Science</h1>
-  <p>Python is one of the most popular languages used by data scientists and software developers alike for data science tasks. It can be used to predict outcomes, automate tasks, streamline processes, and offer business intelligence insights.</p> 
-  <p>
-    <a href="{% url 'home-page' %}">Home</a> | 
-    <a href="{% url 'about-page' %}">About</a> | 
-    <a href="{% url 'contact-page' %}">Contact Us</a>
-  </p>
-</div>
-  
+{% block content %}
 
-
-<div class="container">
   <h3>Scrapy</h3>
   <p> Scrapy (/ˈskreɪpaɪ/ SKRAY-peye) is a free and open-source web-crawling framework written in Python. Originally designed for web scraping, it can also be used to extract data using APIs or as a general-purpose web crawler.[2] It is currently maintained by Scrapinghub Ltd., a web-scraping development and services company.
 
@@ -31,10 +9,4 @@ Scrapy project architecture is built around "spiders", which are self-contained 
 
 Some well-known companies and products using Scrapy are: Lyst, Parse.ly,Sayone Technologies[8], Sciences Po Medialab, Data.gov.uk’s World Government Data site.</p>
   
-</div>
-
-
-
-</body>
-</html>
-
+{% endblock content %}
