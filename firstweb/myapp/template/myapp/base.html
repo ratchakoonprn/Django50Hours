@@ -19,7 +19,13 @@
     <a href="{% url 'about-page' %}">About</a> | 
     <a href="{% url 'contact-page' %}">Contact Us</a> |
     <a href="{% url 'allproducts-page' %}">All Libraries</a> |
-    <a href="{% url 'addproduct-page' %}">Add Libraries</a>
+    
+    {% if user.is_authenticate %}
+      <a href="{% url 'addproduct-page' %}">Add Libraries</a> |
+    {% else %}
+      <a href="{% url 'register-page' %}">Register</a> 
+    {% endif %}
+
   </p>
 </div>
   

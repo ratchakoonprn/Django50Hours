@@ -1,33 +1,50 @@
 {% extends 'myapp/base.html' %}
 
 {% block content %}
+	
+	<div class="container" style = "margin-bottom: 50px ">
+		<h2>Insert Product</h2>
+		<p>Admin insert product into the system</p>
+		<form method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="name">Product Name:</label>
+				<input type="text" class="form-control" id="name" name="name">
+			</div>
 
-  <h2>Insert Product</h2>
-  <p>Admin insert product into the system</p>
-  <form method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="name">Product Name:</label>
-      <input type="text" class="form-control" id="name" name="name">
-    </div>
+			<div class="form-group">
+				<label for="price">Price:</label>
+				<input type="text" class="form-control" id="price" name="price">
+			</div>
 
-    <div class="form-group">
-      <label for="price">Price:</label>
-      <input type="text" class="form-control" id="price" name="price">
-    </div>
+			<div class="form-group">
+				<label for="detail">Detail:</label>
+				<textarea class="form-control" rows="5" id="detail" name="detail"></textarea>
+			</div>
 
-    <div class="form-group">
-      <label for="detail">Detail:</label>
-      <textarea class="form-control" rows="5" id="detail" name="detail"></textarea>
-    </div>
+			<div class="form-group">
+				<label for="imageurl">Image URL:</label>
+				<input type="text" class="form-control" id="imageurl" name="imageurl">
+			</div>
 
-    <div class="form-group">
-      <label for="imageurl">Image URL:</label>
-      <input type="text" class="form-control" id="imageurl" name="imageurl">
-    </div>
+			<div class="form-group">
+				<label for="quantity">Participants Avaliable:</label>
+				<input type="text" class="form-control" id="quantity" name="quantity">
+			</div>
+
+			<div class="form-group">
+				<label for="unit">Unit:</label>
+				<input type="text" class="form-control" id="unit" name="unit">
+			</div>
+
+			<div class="form-group">
+				<label for="imageupload">Browse Image:</label>
+				<input type="file" class="form-control" id="imageupload" name="imageupload">
+			</div>
 
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-primary">Submit</button>
 
-  </form>
+		</form>
+	</div>
 {% endblock content %}
