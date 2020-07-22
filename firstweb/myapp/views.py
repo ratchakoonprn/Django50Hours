@@ -1,10 +1,11 @@
 #myapp/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.staticfiles import storage
-from .models import Allproduct
+from .models import Allproduct, Profile
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 #HttpResponse คือ ฟังก์ชันสำหรับทำให้แสดงข้อความหน้าเว็บได้
 
 def Home(request):
@@ -27,6 +28,9 @@ def Scrapy(request):
 	return render(request,'myapp/scrapy.html')
 
 def AddProduct(request):
+	if request.user.profile.usertype != 'admin': #หาก user ไม่ใช่ admin
+		return redirect('home-page') #กลับไปยังหน้า home
+
 	if request.method == 'POST' and request.FILES['imageupload']:
 		data = request.POST.copy() #ดึงข้อมูลจากหน้า addproduct.html
 		name = data.get('name') # name เป็นชื่อที่ตั้งในส่วนของ attribute name ใน html
@@ -83,4 +87,12 @@ def Register(request):
 		newuser.last_name = last_name
 		newuser.set_password(password)
 		newuser.save()
+
+		profile = Profile()
+		profile.user = User.objects.get(username=email)
+		profile.save()
+
+		user = authenticate(username=email, password=password)
+		login(request,user)
+
 	return render(request,'myapp/register.html')

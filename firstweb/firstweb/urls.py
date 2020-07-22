@@ -18,6 +18,7 @@ from django.urls import path, include
 from .import settings
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib.auth import views as auth_views 
   
 #urlpatterns += staticfiles_urlpatterns()
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -28,7 +29,9 @@ path คือ การทำให้เว็บไซต์เรามี u
 
 urlpatterns = [
 	path('admin/', admin.site.urls), #localhost:8000/admin
-	path('', include('myapp.urls')) #localhost:8000
+	path('', include('myapp.urls')), #localhost:8000
+	path('login/',auth_views.LoginView.as_view(template_name = 'myapp/login.html'),name = 'login'),
+	path('logout/',auth_views.LogoutView.as_view(template_name = 'myapp/logout.html'),name = 'logout'),
 	# บรรทัดบนนี้เป็นการทำให้โปรเจค link กับ urls ของ app
 ]
 
