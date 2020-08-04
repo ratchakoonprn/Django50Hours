@@ -1,8 +1,8 @@
 {% extends 'myapp/base.html' %}
 
 {% block content %}
-	<h3>Courses Listing</h3>
-	<p>Popular Python Libraries for Data Science</p>
+<h3>Popular Course (must be Booking)</h3>
+	<p>Using Python Libraries for Data Science Courses</p>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -14,7 +14,7 @@
 				<hr><br> -->
 					<div class="col-sm-4">
 							<div class="card" style="width:300px; height: 550px;">
-								<!--<img class="card-img-top" src="{{ pd.imageurl }}" alt="Card image" style="width:100px;height:50px";/>-->
+									<!--<img class="card-img-top" src="{{ pd.imageurl }}" alt="Card image" style="width:100px;height:50px";/>-->
 									{% if pd.image %}
 										<img class="card-img-top" src="{{ pd.image.url }}" alt="Card image" style="width:100px;height:50px";/>
 									{% elif pd.imageurl != None %}
@@ -34,25 +34,31 @@
 											<a href="#" class="btn btn-danger">Prebooking</a>
 										{% endif %}
 
+
 										<p class="card-text">{{ pd.detail | linebreaks |truncatechars_html:50}}</p> 
 									</div>
 
+									<!--
 									{% if pd.instock == True %}
-
-										{% if user.is_authenticated %}
-											<a href="{% url 'addtocart-page' pd.id %}" class="btn btn-info">Enroll Now</a>
-										{% else %}
-											<a href="{% url 'login' %}" class="btn btn-info">Enroll Now</a>
-										{% endif %}
-
+										<a href="#" class="btn btn-info">Download Avaliable</a>
 									{% else %}
 										<a href="#" class="btn btn-danger">Unavaliable</a>
 									{% endif %}
+									-->
+
+									<!--{% if pd.instock == True %}
+										<a href="{% url 'addtocart-page' pd.id %}" class="btn btn-info">Enroll Now</a>
+									{% else %}
+										<a href="#" class="btn btn-danger">Unavaliable</a>
+									{% endif %}-->
 							</div>
 							<br><br>
 					</div>
 			{% endfor %}
 		</div>
 	</div>
-{% endblock content %}
 
+	<div class="container">
+		<center><a href="{% url 'allproducts-page' %}"><h1>View All Courses</h1></a></center>
+	</div>
+{% endblock content %}

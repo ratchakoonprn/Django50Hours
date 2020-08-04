@@ -1,0 +1,14 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+  <h3>My Cart</h3>
+
+	{% for pd in mycart %}
+		<p> 
+			{{pd.stamp}} | {{pd.productid}} | {{pd.productname}} | {{pd.price}} | {{pd.quantity}} | {{pd.total}}
+			<hr>
+
+		</p>
+	{% endfor %}
+
+{% endblock content %}

@@ -2,11 +2,17 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.staticfiles import storage
-from .models import Allproduct, Profile
+from .models import *
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 #HttpResponse คือ ฟังก์ชันสำหรับทำให้แสดงข้อความหน้าเว็บได้
+
+def Lastest(request):
+	product = Allproduct.objects.all().order_by('id').reverse()[:3] #ดึงข้อมูลเพียง 3 ตัว
+	preorder = Allproduct.objects.filter(quantity__lte=0)#กรองข้อมูลที่ค่า quantity <= 0
+	context = {'product':product,'preorder':preorder} #โยนข้อมูลที่เราถึงมาจากบรรทัดข้างบนเพื่อแนบไปกับ context
+	return render(request,'myapp/lastest.html', context)
 
 def Home(request):
 	#return HttpResponse('สวัสดี<h1> Hello world</h1><h3>สบายดีไหม</h3>')
@@ -14,7 +20,6 @@ def Home(request):
 	product1 = 'Data Mining Libraries'
 	product2 = 'Data Processing and Modeling Libraries'
 	product3 = 'Data Visualization Libraries'
-
 	context = {'product1':product1,'product2':product2,'product3':product3}
 	return render(request,'myapp/home.html', context)
 
@@ -96,3 +101,29 @@ def Register(request):
 		login(request,user)
 
 	return render(request,'myapp/register.html')
+
+def AddtoCart(request,pid):
+	#localhost:8000/addtocart/3
+	username = request.user.username
+	user = User.objects.get(username=username)
+	check = Allproduct.objects.get(id=pid)
+
+	newcart = Cart()
+	newcart.user = user
+	newcart.productid = pid
+	newcart.productname = check.name
+	newcart.price = int(check.price)
+	newcart.quantity = 1
+	calculate = int(check.price) * 1
+	newcart.total = calculate
+	newcart.save()
+
+	return redirect('allproducts-page')
+
+def MyCart(request):
+	username = request.user.username
+	user = User.objects.get(username=username)
+	mycart = Cart.objects.filter(user = user)
+	context = {'mycart':mycart}#โยนข้อมูลที่เราถึงมาจากบรรทัดข้างบนเพื่อแนบไปกับ context
+	return render(request,'myapp/mycart.html',context)
+
