@@ -59,7 +59,7 @@
 
 			{% if user.is_authenticated and user.profile.usertype == 'member' %}
 			<li class="nav-item active">
-				<a class="nav-link" href="{% url 'mycart-page' %}">Orders <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="{% url 'mycart-page' %}">Orders <span class="badge badge-danger">{{user.profile.cartquan}}</span></span> <span class="sr-only">(current)</span></a>
 			</li>
 			{% endif %}
 

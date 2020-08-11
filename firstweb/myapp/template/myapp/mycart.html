@@ -1,14 +1,48 @@
 {% extends 'myapp/base.html' %}
 
 {% block content %}
-  <h3>My Cart</h3>
+	<!--Alert-->
+	{% if status == 'delete' %}
+	<div class="alert alert-danger">
+		<strong>Orders have been Delete!!</strong>
+	</div>
+	<br>
+	{% endif %}
+	<div class="container">
+	  <h2>My Cart</h2>
+	  <p>All customer orders are in the cart to confirm the order.</p>            
+	  <table class="table">
+		<thead>
+		  <tr>
+		  	<th>Latest Time Stamp</th>
+			<th>Product Id</th>
+			<th>Product Name</th>
+			<th>Price</th>
+			<th>Quantity</th>
+			<th>Total</th>
+			<th>Delete</th>
+		  </tr>
+		</thead>
+		<tbody>
+		{% for pd in mycart %}
+		  <tr>
+			<td>{{pd.stamp}}</td>
+			<td>{{pd.productid}}</td>
+			<td>{{pd.productname}}</td>
+			<td>{{pd.price}}</td>
+			<td>{{pd.quantity}}</td>
+			<td>{{pd.total}}</td>
 
-	{% for pd in mycart %}
-		<p> 
-			{{pd.stamp}} | {{pd.productid}} | {{pd.productname}} | {{pd.price}} | {{pd.quantity}} | {{pd.total}}
-			<hr>
+			<form method="POST" id="form{{pd.productid}}" onsubmit="return confirm('Confirm Delete!!')"> 
+				<!--ฟอร์มนี้ใช้สำหรับ submit ค่าสินค้าชิ้นนี้เท่านั้น-->
+			{% csrf_token %}
+				<input type="hidden" name="productid" value="{{pd.productid}}">
+				<td><button type="submit" form="form{{pd.productid}}" class="bth btn-danger">Delete</button></td>
+			</form>
 
-		</p>
-	{% endfor %}
-
+		  </tr>
+		 {% endfor %}
+		</tbody>
+	  </table>
+	</div>
 {% endblock content %}

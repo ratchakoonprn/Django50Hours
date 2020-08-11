@@ -108,22 +108,71 @@ def AddtoCart(request,pid):
 	user = User.objects.get(username=username)
 	check = Allproduct.objects.get(id=pid)
 
-	newcart = Cart()
-	newcart.user = user
-	newcart.productid = pid
-	newcart.productname = check.name
-	newcart.price = int(check.price)
-	newcart.quantity = 1
-	calculate = int(check.price) * 1
-	newcart.total = calculate
-	newcart.save()
+	try:
+		#กรณีที่สินค้ามีซ้ำ
+		newcart = Cart.objects.get(user=user, productid=str(pid)) #ตรวจว่าผู้ใช้งานคนนี้เคยสั่งสินค้านี้มาก่อนหรือไม่
+		#print('EXISTS: ', pcheck.exists()) #check ว่า รหัสสินค้านี้มีอยู่ใน database หรือเปล่า
+		newquan = newcart.quantity + 1 #ถ้า user เคยสั่งซื้อสินค้านี้อยู่ ก็ให้เพิ่มขึ้นอีก 1 รายการ
+		newcart.quantity = newquan 
+		calculate = newcart.price * newquan
+		newcart.total = calculate
+		newcart.save()
 
-	return redirect('allproducts-page')
+		#update จำนวนของตระกร้าสินค้า ณ ตอนนี้
+		count = Cart.objects.filter(user=user)
+		#print('COUNT: ',count) #นับจำนวนรายการที่สั่งซื้อ กรณีที่รายการ 1 มีการสั่งซื้อจำนวนหลายๆ ตัว จะนับเป็น 1 รายการ
+		count = sum([c.quantity for c in count]) #นับจำนวนรายการทั้งหมด
+		updatequan = Profile.objects.get(user=user)
+		updatequan.cartquan = count
+		updatequan.save()
+		
+		return redirect('allproducts-page')
+	except:
+		#กรณีที่ไม่มีสินค้าซ้ำ ต้องทำการสร้างสินค้าชิ้นใหม่นี้ขึ้นมา
+		newcart = Cart()
+		newcart.user = user
+		newcart.productid = pid
+		newcart.productname = check.name
+		newcart.price = int(check.price)
+		newcart.quantity = 1
+		calculate = int(check.price) * 1
+		newcart.total = calculate
+		newcart.save()
+
+		count = Cart.objects.filter(user=user)
+		#print('COUNT: ',count) #นับจำนวนรายการที่สั่งซื้อ กรณีที่รายการ 1 มีการสั่งซื้อจำนวนหลายๆ ตัว จะนับเป็น 1 รายการ
+		count = sum([c.quantity for c in count]) #นับจำนวนรายการทั้งหมด
+		updatequan = Profile.objects.get(user=user)
+		updatequan.cartquan = count
+		updatequan.save()
+		return redirect('allproducts-page')
 
 def MyCart(request):
 	username = request.user.username
 	user = User.objects.get(username=username)
+	
+	context = {}
+
+	if request.method == 'POST':
+		#ใช้สำหรับการลบเท่านั้น
+		data = request.POST.copy()
+		productid = data.get('productid')
+
+		item = Cart.objects.get(user=user, productid=productid)
+		item.delete()
+		context['status'] = 'delete'
+
+		#update ตัวเลขหลัง Order หลังจากที่ทำการลบข้อมูลออกจากตะกร้าสินค้า
+		count = Cart.objects.filter(user=user)
+		count = sum([c.quantity for c in count]) #นับจำนวนรายการทั้งหมด
+		updatequan = Profile.objects.get(user=user)
+		updatequan.cartquan = count
+		updatequan.save()
+		return redirect('allproducts-page')
+
+
 	mycart = Cart.objects.filter(user = user)
-	context = {'mycart':mycart}#โยนข้อมูลที่เราถึงมาจากบรรทัดข้างบนเพื่อแนบไปกับ context
+	context['mycart'] = mycart #โยนข้อมูลที่เราถึงมาจากบรรทัดข้างบนเพื่อแนบไปกับ context
+
 	return render(request,'myapp/mycart.html',context)
 
