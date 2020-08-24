@@ -162,7 +162,7 @@ def MyCart(request):
 		item.delete()
 		context['status'] = 'delete'
 
-		#update ตัวเลขหลัง Order หลังจากที่ทำการลบข้อมูลออกจากตะกร้าสินค้า
+		#รวมจำนวนสินค้าและราคาสินค้าาทั้งหมด
 		count = Cart.objects.filter(user=user)
 		count = sum([c.quantity for c in count]) #นับจำนวนรายการทั้งหมด
 		updatequan = Profile.objects.get(user=user)
@@ -172,7 +172,72 @@ def MyCart(request):
 
 
 	mycart = Cart.objects.filter(user = user)
+	count = sum([c.quantity for c in mycart]) #รวมจำนวนสินค้า
+	total = sum([c.total for c in mycart]) #รวมราคา
+
 	context['mycart'] = mycart #โยนข้อมูลที่เราถึงมาจากบรรทัดข้างบนเพื่อแนบไปกับ context
+	context['count'] = count
+	context['total'] = total
 
 	return render(request,'myapp/mycart.html',context)
 
+def MyCartEdit(request):
+	username = request.user.username
+	user = User.objects.get(username=username)
+	context = {}
+	if request.method == 'POST':
+		data = request.POST.copy()
+
+		if data.get('clear') == 'clear':
+			Cart.objects.filter(user=user).delete() #ลบรายการในตะกร้าสินค้าทั้งหมด
+			updatequan = Profile.objects.get(user=user)
+			updatequan.cartquan = 0 #กำหนดให้ตัวเลขบน nav bar มีค่าเป็น 0
+			updatequan.save()
+			return redirect('mycart-page')
+
+		editlist = []
+
+		for k,v in data.items(): #k -> key, v-> value
+			if k[:2] == 'pd': #if k < 2
+				pid = int(k.split('_')[1]) #ตัดคำ index 1
+				dt = [pid,int(v)]
+				editlist.append(dt)
+
+		for ed in editlist:
+			edit = Cart.objects.get(productid=ed[0], user=user) #productid
+			edit.quantity = ed[1] #quantity
+			calculate = edit.price * ed[1]
+			edit.total = calculate
+			edit.save()
+		
+		#update quantity on  nav bar
+		count = Cart.objects.filter(user=user)
+		#print('COUNT: ',count) #นับจำนวนรายการที่สั่งซื้อ กรณีที่รายการ 1 มีการสั่งซื้อจำนวนหลายๆ ตัว จะนับเป็น 1 รายการ
+		count = sum([c.quantity for c in count]) #นับจำนวนรายการทั้งหมด
+		updatequan = Profile.objects.get(user=user)
+		updatequan.cartquan = count
+		updatequan.save()
+		return redirect('mycart-page')
+
+	if request.method == 'POST':
+		#ใช้สำหรับการลบเท่านั้น
+		data = request.POST.copy()
+		productid = data.get('productid')
+
+		item = Cart.objects.get(user=user, productid=productid)
+		item.delete()
+		context['status'] = 'delete'
+
+		#update ตัวเลขหลัง Order หลังจากที่ทำการลบข้อมูลออกจากตะกร้าสินค้า
+		count = Cart.objects.filter(user=user)
+		count = sum([c.quantity for c in count]) #นับจำนวนรายการทั้งหมด
+		updatequan = Profile.objects.get(user=user)
+		updatequan.cartquan = count
+		updatequan.save()
+		return redirect('mycartedit-page')
+
+
+	mycart = Cart.objects.filter(user = user)
+	context['mycart'] = mycart #โยนข้อมูลที่เราถึงมาจากบรรทัดข้างบนเพื่อแนบไปกับ context
+
+	return render(request,'myapp/mycartedit.html',context)

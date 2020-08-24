@@ -1,4 +1,5 @@
 {% extends 'myapp/base.html' %}
+{% load humanize %}
 
 {% block content %}
 	<!--Alert-->
@@ -29,9 +30,9 @@
 			<td>{{pd.stamp}}</td>
 			<td>{{pd.productid}}</td>
 			<td>{{pd.productname}}</td>
-			<td>{{pd.price}}</td>
+			<td>{{pd.price|intcomma}}</td>
 			<td>{{pd.quantity}}</td>
-			<td>{{pd.total}}</td>
+			<td>{{pd.total|intcomma}}</td>
 
 			<form method="POST" id="form{{pd.productid}}" onsubmit="return confirm('Confirm Delete!!')"> 
 				<!--ฟอร์มนี้ใช้สำหรับ submit ค่าสินค้าชิ้นนี้เท่านั้น-->
@@ -42,7 +43,18 @@
 
 		  </tr>
 		 {% endfor %}
+		 <!--เพิ่มแถวในตารางเพื่อแสดงผลรวมทั้งหมดด้านล่างรายการสินค้าทั้งหมด-->
+		 <tr>
+		 	<td>Total</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><h4>{{count}}</h4></td>
+			<td><h4>{{total|intcomma}}</h4></td>
+			<td></td>
+		 </tr>
 		</tbody>
 	  </table>
+	  <a href="{% url 'mycartedit-page' %}" class="bth btn-primary">Edit Order's Quantity</a>
 	</div>
 {% endblock content %}

@@ -1,0 +1,61 @@
+{% extends 'myapp/base.html' %}
+{% load humanize %}
+
+{% block content %}
+	<!--Alert-->
+	{% if status == 'delete' %}
+	<div class="alert alert-danger">
+		<strong>Orders have been Delete!!</strong>
+	</div>
+	<br>
+	{% endif %}
+	<div class="container">
+	  <h2>Edit Cart</h2>
+	  <p>You can edit the quantity in the cart.</p>    
+	  <form method="POST" id="formsave"> 
+		{% csrf_token %}          
+		  <table class="table">
+			<thead>
+			  <tr>
+				<th>Product Id</th>
+				<th>Product Name</th>
+				<th>Price</th>
+				<th>Quantity</th>
+				<th>Delete</th>
+			  </tr>
+			</thead>
+			<tbody>
+			{% for pd in mycart %}
+			  <tr>
+				<td>{{pd.productid}}</td>
+				<td>{{pd.productname}}</td>
+				<td>{{pd.price|intcomma}}</td>
+				<td><input type="text" name="pd_{{pd.productid}}" value="{{pd.quantity}}"></td>
+
+				<form method="POST" id="form{{pd.productid}}" onsubmit="return confirm('Confirm Delete!!')"> 
+					<!--ฟอร์มนี้ใช้สำหรับ submit ค่าสินค้าชิ้นนี้เท่านั้น-->
+				{% csrf_token %}
+					
+					<td><button type="submit" form="form{{pd.productid}}" class="bth btn-danger">Delete</button></td>
+				</form>
+
+			  </tr>
+			 {% endfor %}
+			</tbody>
+		  </table>
+		 <div class="row">
+		  	<input type="hidden" name="checksave" value="checksave">
+			<button type="submit" form="formsave" class="bth btn-primary">Save</button>
+		</form>
+
+			<form id = "formclear" method = "POST" onsubmit="return confirm('Do you confirm to clear all courses')">	
+				{% csrf_token %}	
+				<div style="padding-left: 15px;">
+					<input type="hidden" name="clear" value="clear">
+					<button type="submit" form="formclear" class="bth btn-danger">Delete All Courses</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+{% endblock content %}
