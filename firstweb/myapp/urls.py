@@ -14,4 +14,5 @@ urlpatterns = [
 	path('addtocart/<int:pid>', AddtoCart, name = 'addtocart-page'),
 	path('mycart/', MyCart, name = 'mycart-page'),
 	path('mycart/edit/', MyCartEdit, name = 'mycartedit-page'),
+	path('checkout/', Checkout, name = 'checkout-page'),
 ]

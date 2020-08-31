@@ -241,3 +241,47 @@ def MyCartEdit(request):
 	context['mycart'] = mycart #โยนข้อมูลที่เราถึงมาจากบรรทัดข้างบนเพื่อแนบไปกับ context
 
 	return render(request,'myapp/mycartedit.html',context)
+
+def Checkout(request):
+	username = request.user.username
+	user = User.objects.get(username=username)
+	if request.method == 'POST':
+		data = request.POST.copy()
+		name = data.get('name')
+		tel = data.get('tel')
+		address = data.get('address')
+		shipping = data.get('shipping')
+		payment = data.get('payment')
+		other = data.get('other')
+		page = data.get('page')
+
+		if page == 'information':
+			context = {}
+			context['name'] = name
+			context['tel'] = tel
+			context['adderss'] = address
+			context['shipping'] = shipping
+			context['payment'] = payment
+			context['other'] = other
+
+			mycart = Cart.objects.filter(user = user)
+			count = sum([c.quantity for c in mycart]) #รวมจำนวนสินค้า
+			total = sum([c.total for c in mycart]) #รวมราคา
+
+			context['mycart'] = mycart #โยนข้อมูลที่เราถึงมาจากบรรทัดข้างบนเพื่อแนบไปกับ context
+			context['count'] = count
+			context['total'] = total
+
+			return render(request,'myapp/checkout2.html',context)
+
+		
+
+		if page == 'confirm':
+			print('Confirm')
+			# generate order number and save to Order Models 
+			# save product in cart to OrderProduct models
+			# clear cart
+			# redirect to order list page
+
+
+	return render(request,'myapp/checkout1.html')
