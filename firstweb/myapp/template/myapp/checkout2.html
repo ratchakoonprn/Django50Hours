@@ -32,9 +32,9 @@
 		  <tr>
 			<th>Product Id</th>
 			<th>Product Name</th>
-			<th>Price</th>
-			<th>Quantity</th>
-			<th>Total</th>
+			<th style="text-align: right">Price</th>
+			<th style="text-align: right">Quantity</th>
+			<th style="text-align: right">Total</th>
 		  </tr>
 		</thead>
 		<tbody>
@@ -42,17 +42,17 @@
 			  <tr>
 				<td>{{pd.productid}}</td>
 				<td>{{pd.productname}}</td>
-				<td>{{pd.price|intcomma}}</td>
-				<td>{{pd.quantity}}</td>
-				<td>{{pd.total|intcomma}}</td>
+				<td style="text-align: right">{{pd.price|intcomma}}</td>
+				<td style="text-align: right">{{pd.quantity}}</td>
+				<td style="text-align: right">{{pd.total|intcomma}}</td>
 			  </tr>
 			 {% endfor %}
 			 <tr>
-			 	<td>Total</td>
+			 	<td><h4>Total</h4></td>
 				<td></td>
 				<td></td>
-				<td><h4>{{count}}</h4></td>
-				<td><h4>{{total|intcomma}}</h4></td>
+				<td style="text-align: right"><h4>{{count}}</h4></td>
+				<td style="text-align: right"><h4>{{total|intcomma}}</h4></td>
 		 </tr>
 		</tbody>
 	  </table>
