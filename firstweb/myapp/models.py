@@ -33,4 +33,27 @@ class Cart(models.Model):
 	quantity = models.IntegerField()
 	total = models.IntegerField()
 	stamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-	
+
+class OrderList(models.Model):
+	orderid = models.CharField(max_length=100)
+	productid = models.CharField(max_length=100)
+	productname = models.CharField(max_length=100)
+	price = models.IntegerField()
+	quantity = models.IntegerField()
+	total = models.IntegerField()
+
+class OrderPending(models.Model):
+	orderid = models.CharField(max_length=100)
+	user = models.ForeignKey(User,on_delete=models.CASCADE)
+	name = models.CharField(max_length=100)
+	tel = models.CharField(max_length=100)
+	address = models.TextField()
+	shipping = models.CharField(max_length=100)
+	payment = models.CharField(max_length=100)
+	other = models.TextField()
+	stamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+	paid = models.BooleanField(default=False)
+	slip = models.ImageField(upload_to="slip", null=True, blank=True)
+	paymentid = models.CharField(max_length=100, null=True, blank=True)
+
+

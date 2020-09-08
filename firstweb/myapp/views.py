@@ -6,6 +6,7 @@ from .models import *
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from datetime import datetime
 #HttpResponse คือ ฟังก์ชันสำหรับทำให้แสดงข้อความหน้าเว็บได้
 
 def Lastest(request):
@@ -274,14 +275,45 @@ def Checkout(request):
 
 			return render(request,'myapp/checkout2.html',context)
 
-		
-
 		if page == 'confirm':
 			print('Confirm')
-			# generate order number and save to Order Models 
-			# save product in cart to OrderProduct models
-			# clear cart
-			# redirect to order list page
+			print(data)
+			mycart = Cart.objects.filter(user = user)
+			# id = OD 0007 2020 09 03 22 00 30
+			mid = str(user.id).zfill(4) #convert to string and at zero
+			dt = datetime.now().strftime('%Y%m%d%H%M%S')
+			orderid = 'OD' + mid + dt
 
+			# save product in cart to OrderProduct models
+			for pd in mycart:
+				order =  OrderList()
+				order.orderid = orderid
+				order.productid = pd.productid
+				order.productname = pd.productname
+				order.price = pd.price
+				order.quantity = pd.quantity
+				order.total = pd.total
+				order.save()
+
+			# create order pending
+			odp = OrderPending()
+			odp.orderid = orderid
+			odp.user = 	user
+			odp.name = name
+			odp.tel = tel
+			odp.address = address
+			odp.shipping = shipping
+			odp.payment = payment
+			odp.other = other
+			odp.save()
+			
+			# clear cart
+			Cart.objects.filter(user=user).delete()
+			updatequan = Profile.objects.get(user=user)
+			updatequan.cartquan = 0
+			updatequan.save()
+
+			# redirect to order list page
+			return redirect('mycart-page')
 
 	return render(request,'myapp/checkout1.html')
