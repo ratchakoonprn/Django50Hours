@@ -1,0 +1,36 @@
+{% extends 'myapp/base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+	<div class="container">
+	  <h2>All Order List</h2>
+	  <p>All order and status</p>            
+	  <table class="table">
+		<thead>
+		  <tr>
+		  	<th>Order Time</th>
+			<th>Order Id</th>
+			<th>Total</th>
+			<th>Status</th>
+		  </tr>
+		</thead>
+		<tbody>
+		{% for od in allorder %}
+		  <tr>
+			<td>{{od.stamp}}</td>
+			<td>{{od.orderid}}</td>
+			<td>{{od.total|intcomma}}</td>
+			<td>
+				{% if od.paid %}
+					Paid
+				{% else %}
+					<a href="#" class="btn btn-primary">Upload Slip</a>
+				{% endif %}
+			</td>
+		  </tr>
+		 {% endfor %}
+		</tbody>
+	  </table>
+	</div>
+{% endblock content %}

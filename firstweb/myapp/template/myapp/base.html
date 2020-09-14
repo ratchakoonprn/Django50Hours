@@ -72,12 +72,19 @@
 			</li>
 			{% endif %}
 
+			<li class="nav-item active">
+				<a class="nav-link" href="{% url 'orderlist-page' %}">Order List</a>
+			</li>
+
+			{% if user.is_authenticated and user.profile.usertype == 'admin' %}
+			<li class="nav-item active">
+				<a class="nav-link" href="{% url 'addproduct-page' %}">Add Libraries <span class="sr-only">(current)</span></a>
+			</li>
 
 			<li class="nav-item active">
-				{% if user.is_authenticated and user.profile.usertype == 'admin' %}
-				<a class="nav-link" href="{% url 'addproduct-page' %}">Add Libraries <span class="sr-only">(current)</span></a>
-		{% endif %}
+				<a class="nav-link" href="{% url 'allorderlist-page' %}">All Order List</a>
 			</li>
+			{% endif %}
 		</ul>
 
 		{% if user.is_authenticated %}

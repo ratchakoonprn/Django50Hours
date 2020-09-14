@@ -317,3 +317,33 @@ def Checkout(request):
 			return redirect('mycart-page')
 
 	return render(request,'myapp/checkout1.html')
+
+def OrderListPage(request):
+	username = request.user.username
+	user = User.objects.get(username=username)
+	context = {}
+
+	order = OrderPending.objects.filter(user=user)
+	for od in order:
+		orderid = od.orderid
+		odlist = OrderList.objects.filter(orderid = orderid) #หาผลรวมใน orderlist
+		total = sum([c.total for c in odlist]) #รวมราคา
+		od.total = total
+
+	context['allorder'] = order
+
+	return render(request,'myapp/orderlist.html',context)
+	
+def AllOrderListPage(request):
+	context = {}
+
+	order = OrderPending.objects.all()
+	for od in order:
+		orderid = od.orderid
+		odlist = OrderList.objects.filter(orderid = orderid) #หาผลรวมใน orderlist
+		total = sum([c.total for c in odlist]) #รวมราคา
+		od.total = total
+
+	context['allorder'] = order
+
+	return render(request,'myapp/allorderlist.html',context)
