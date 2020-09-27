@@ -392,8 +392,37 @@ def UploadSlip(request,orderid):
 				'oddetail':oddetail,
 				'count':count}
 
+	return render(request,'myapp/uploadslip.html',context)
+
+def UpdatePaid(request,orderid,status):
+
+	if request.user.profile.usertype != 'admin': #หาก user ไม่ใช่ admin
+		return redirect('home-page') #กลับไปยังหน้า home
+
+	order = OrderPending.objects.get(orderid=orderid)
+	if status == 'confirm':
+		order.paid = True
+	elif status == 'cancel':
+		order.paid = False
+	order.save()
+
+	return redirect('allorderlist-page')
+
+
+def UpdateTracking(request,orderid):
+
+	if request.user.profile.usertype != 'admin': #หาก user ไม่ใช่ admin
+		return redirect('home-page') #กลับไปยังหน้า home
+
+	if request.method == 'POST':
+		order = OrderPending.objects.get(orderid=orderid)
+		data = request.POST.copy()
+		trackingnumber = data.get('trackingnumber') 
+		order.trackingnumber = trackingnumber
+		order.save()
+		return redirect('allorderlist-page')
+
+	context = {'orderid':orderid}
 	
 
-
-
-	return render(request,'myapp/uploadslip.html',context)
+	return render(request,'myapp/updatetracking.html',context)

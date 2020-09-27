@@ -13,6 +13,7 @@
 			<th>Order Id</th>
 			<th>Total</th>
 			<th>Status</th>
+			<th>Tracking No.</th>
 		  </tr>
 		</thead>
 		<tbody>
@@ -26,6 +27,11 @@
 					Paid
 				{% else %}
 					<a href="#" class="btn btn-primary">Upload Slip</a>
+				{% endif %}
+			</td>
+			<td>
+				{% if od.trackingnumber != None %}
+					{{od.trackingnumber}}
 				{% endif %}
 			</td>
 		  </tr>
